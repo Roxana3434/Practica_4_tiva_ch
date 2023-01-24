@@ -3,27 +3,26 @@
  *
  *  Created on: 20/11/2022
  *      Author: Ashley Roxana Reséndiz Sánchez
- */
-#include "lib/include.h"
 
-extern void Configura_Reg_ADC(void)
-{
-    
-/*
     Usando el modulo 0 y 1 , configurar la tarjeta a la frecuencia asignada, para adquirir 6 señales analógicas 
     a una velocidad de 1 millón de muestras por segundo, por los canales asignados  y guardar los valores en un 
-    arreglo para ser enviados con un botones  externos asociado al gpio D a través del protocolo de comunicación 
+    arreglo para ser enviados con un botones  externos asociado al gpio A a través del protocolo de comunicación 
     asíncrona a una velocidad todo esto usando interrupciones.
 
     b) 2,4,6,7,10,1- 30MHZ 57600 -sec3, sec1
                                                     PIN - CANAL
-    c) 3,5,7,4,2,8 70 MHZ 9600, -sec2, sec3, sec1:  PE1 - AIN2, PE0 - AIN3, PE5 - AIN8, PD3 - AIN4, PD2 - AIN5, PD0 - AIN7
+    c) 3,5,7,4,2,8 20 MHZ 9600, -sec2, sec3, sec1:  PE1 - AIN2, PE0 -* AIN3, PE5 - AIN8, PD3 - AIN4, PD2 -* AIN5, PD0 -* AIN7
                            pag. 104
     modulo 0 -> sec. 1 -> Interrupción 15
     modulo 1 -> sec. 3 -> Interrupción 51
     modulo 1 -> sec. 2 -> Interrupción 50
     */
 
+#include "lib/include.h"
+
+extern void Configura_Reg_ADC(void)
+{
+    
     //Pag 352 para inicializar el modulo de reloj del adc RCGCADC
     SYSCTL->RCGCADC = (1<<0)|(1<<1);  //Inicializar  del reloj del adc  (RCGCADC), pag. 352 se habilita el modulo 1 y 0
     

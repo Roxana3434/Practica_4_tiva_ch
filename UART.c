@@ -6,11 +6,11 @@
  */
 #include "lib/include.h"
 
-//Configuración de UART0 que corresponde al PA0 y PA1  pag. 895
+//Configuración de UART0 que corresponde al PA0 -> Rx y PA1 -> Tx  pag. 895
 
 extern void Configurar_UART0(void)
 {
-    //Paso 1 (RCGCUART) pag.344 UART/modulo0 0->Disable 1->Enable
+    //Paso 1 (RCGCUART) pag.344 UART/modulo 0->Disable 1->Enable
     SYSCTL->RCGCUART  = (1<<0);   
 
     //Paso 2 (RCGCGPIO) pag.340 Enable clock port A
@@ -20,7 +20,7 @@ extern void Configurar_UART0(void)
     GPIOA->AFSEL = (1<<1) | (1<<0); //PA0 y PA1
 
     //GPIO Port Control (GPIOPCTL) PA0-> U0Rx PA1-> U0Tx pag.1351 para conocer que valor poner
-    GPIOA->PCTL = (GPIOA->PCTL&0xFFFFFF00) | 0x00000011;// (1<<0) | (1<<4);//0x00000011
+    GPIOA->PCTL = (GPIOA->PCTL&0xFFFFFF00) | 0x00000011;//Otra forma de configurar: (1<<0) | (1<<4);
     
     // Habilitan los pines como digital pag.682
     GPIOA->DEN = (1<<0) | (1<<1);//PA1 PA0
@@ -48,7 +48,7 @@ extern void Configurar_UART0(void)
     //  UART Clock Configuration(UARTCC) pag.939
     UART0->CC =(0<<0);
 
-    //Disable UART0 UART Control (UARTCTL) pag.918
+    //Habilita los registros para el control del UART (UARTCTL) pag.918
     UART0->CTL = (1<<0) | (1<<8) | (1<<9);
 
 }
