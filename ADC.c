@@ -20,7 +20,7 @@
 
 #include "lib/include.h"
 
-extern void Configura_Reg_ADC(void)
+extern void Configura_Reg_ADC0(void)
 {
     
     //Pag 352 para inicializar el modulo de reloj del adc RCGCADC
@@ -93,7 +93,7 @@ extern void Configura_Reg_ADC(void)
 
 }
 
-/*
+
 //  Metodo de adquisición del ADC 0 y sec. 1
 extern void ADC0_InSeq1(uint16_t *Result)
 {
@@ -130,7 +130,7 @@ extern void ADC1_InSeq3(uint16_t *Result_3)
        printChar('C');
        ADC1->ISC = 0x0008;  //Conversion finalizada, se limpia para volver a convertir 
 
-}*/
+}
 
 
 

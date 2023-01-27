@@ -8,8 +8,10 @@
 //Configura puerto A para usar los 6 botones como interrupciones externas 
 
 #include "lib/include.h"
-extern void Configurar_GPIO(void)
 
+volatile uint16_t Result[6];
+
+extern void Configurar_GPIO(void)
 {
     //Se habilita el puerto a usar 
     SYSCTL->RCGCGPIO |=(1<<0);  //pueto A
@@ -22,7 +24,7 @@ extern void Configurar_GPIO(void)
 
     //Indicar que los pines a trabajan como GPIO son PA7-0
     GPIOA->PCTL = 0x00000000;   
-
+  
     //Para indicar que pines son entradas y cuales son salida 0 -> entrada, 1 -> salida 
     GPIOA->DIR = (0<<2) | (0<<3) | (0<<4) | (0<<5) | (0<<6) | (0<<7); // PA2 - PA7 son entradas 
 
@@ -63,7 +65,7 @@ extern void Configurar_GPIO(void)
     NVIC -> ISER[0] = 0x00000001; //se pone 1 en la interrupción 0 y es ISER[0] porque no se ocupa el 2do nivel, la int. está dentro de las 19 int del 1er nivel 
 }
 
-
+/*
 extern void GPIOA_INT_ISR(void)
 {
     if (GPIOA ->RIS == (1<<2))//A2  el DOS representara que se presiono el boton 2
@@ -123,7 +125,7 @@ extern void GPIOA_INT_ISR(void)
     }
 
     GPIOA ->ICR |=(1<<2) | (1<<3) | (1<<4) | (1<<5) | (1<<6) | (1<<7); //para limpiar el edo de la interrupción
-}
+}*/
 
 
 

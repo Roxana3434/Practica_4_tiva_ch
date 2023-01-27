@@ -9,7 +9,7 @@ clc
 clear all
 close all
 
-serial = serial('com8',9600);
+serial = serialport('com8',9600);
 muestras = 10000; %Cantidad de muestras que se quieren
 i = 1;
 

@@ -53,6 +53,57 @@ extern void Configurar_UART0(void)
 
 }
 
+//Para recibir datos
+extern char readChar(void)
+{
+    //UART FR flag pag 911
+    //UART DR data 906
+    int v;
+    char c;
+    while((UART0->FR & (1<<4)) != 0 );
+    v = UART0->DR & 0xFF;
+    c = v;
+    return c;
+}
+
+//Para enviar dato/caracter
+extern void printChar(char c)
+{
+    while((UART0->FR & (1<<5)) != 0 );
+    UART0->DR = c;
+}
+
+//Enviar datos en cadena
+extern void printString(char* string)
+{
+    while(*string)
+    {
+        printChar(*(string++));
+    }
+    printChar('\n');
+}
+
+//Recibir cadena 
+extern char * readString(char delimitador)
+{
+
+   int i=0;
+   char *string = (char *)calloc(10,sizeof(char));
+   char c = readChar();
+   while(c != delimitador)
+   {
+       *(string+i) = c;
+       i++;
+       if(i%10==0)
+       {
+           string = realloc(string,(i+10)*sizeof(char));
+       }
+       c = readChar();
+   }
+
+   return string;
+}
+
 
 
 

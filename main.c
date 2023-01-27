@@ -10,16 +10,17 @@ int main(void)
 {
 
     // Declaración de variables 
+    volatile uint16_t Result[6];
     //Para enviar los valores del ADC en carácteres, es de 4 porque son cuatro digitos de 4096
     char valor1[4];  
-    char valor2[4];
+   /* char valor2[4];
     char valor3[4];
     char valor4[4];
     char valor5[4];
-    char valor6[4];
+    char valor6[4];*/
 
     Configurar_PLL(_20MHZ);  //**Configuracion de velocidad de reloj
-    Configura_Reg_ADC();
+    Configura_Reg_ADC0();
     Configurar_UART0();
     Configurar_GPIO();
 
@@ -30,7 +31,7 @@ int main(void)
         itoa(Result[0],valor1,10); 
 
         //Se manda el valor de la variable por uart
-        Tx_string(valor1);
+        printString(valor1);
 
         /*//Para guardar el result en valor con una base de 10 (en binario)
         itoa(Result[1],valor2,10); 
