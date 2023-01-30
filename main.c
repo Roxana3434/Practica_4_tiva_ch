@@ -6,79 +6,72 @@
     asíncrona a una velocidad todo esto usando interrupciones.
      c) 3,5,7,4,2,8 20 MHZ 9600  */
 
+
 int main(void)
 {
 
     // Declaración de variables 
-    //Para enviar los valores del ADC en carácteres, es de 4 porque son cuatro digitos de 4096
-    char valor1[4];  
-    char valor2[4];
-    char valor3[4];
-    char valor4[4];
-    char valor5[4];
-    char valor6[4];
+    volatile uint16_t Result[6];
 
-    Configurar_PLL(_20MHZ);  //**Configuracion de velocidad de reloj
-    Configura_Reg_ADC();
+    /*Para enviar los valores del ADC en carácteres, 
+     es char para mandarlo por UART*/
+    uint16_t valor1;
+    uint16_t valor2;
+    uint16_t valor3;
+    uint16_t valor4;
+    uint16_t valor5;
+    uint16_t valor6;
+
+    Configurar_PLL(_20MHZ);  //Configuracion de velocidad de reloj
+    Configura_Reg_ADC0();
     Configurar_UART0();
     Configurar_GPIO();
 
 
     while(1)
     {   
+        //Manda llamar a la función de conversión
+        ADC0_InSeq1(Result);  
+        ADC1_InSeq2(Result);
+        ADC1_InSeq3(Result);
+
+
         //Se convierte result(numerico) en valor(caracteres) con una base de 10 (en binario)
-        itoa(Result[0],valor1,10); 
+        valor1 = (uint16_t)(Result[0]);
+        integer_to_char(valor1); 
 
-        //Se manda el valor de la variable por uart
-        Tx_string(valor1);
+        valor2 = (uint16_t)(Result[1]);
+        integer_to_char(valor2); 
 
-        /*//Para guardar el result en valor con una base de 10 (en binario)
-        itoa(Result[1],valor2,10); 
+        valor3 = (uint16_t)(Result[2]);
+        integer_to_char(valor3); 
 
-        //Se manda el valor de la variable por uart
-        Tx_string(valor2);
+        valor4 = (uint16_t)(Result[3]);
+        integer_to_char(valor4);
 
-        //Para guardar el result en valor con una base de 10 (en binario)
-        itoa(Result[2],valor3,10); 
+        valor5 = (uint16_t)(Result[4]);
+        integer_to_char(valor5);
 
-        //Se manda el valor de la variable por uart
-        Tx_string(valor3);
+        valor6 = (uint16_t)(Result[5]);
+        integer_to_char(valor6);        
 
-        //Para guardar el result en valor con una base de 10 (en binario)
-        itoa(Result[3],valor4,10); 
-
-        //Se manda el valor de la variable por uart
-        Tx_string(valor4);
-
-        //Para guardar el result en valor con una base de 10 (en binario)
-        itoa(Result[4],valor5,10); 
-
-        //Se manda el valor de la variable por uart
-        Tx_string(valor5);
-
-        //Para guardar el result en valor con una base de 10 (en binario)
-        itoa(Result[5],valor6,10); 
-
-        //Se manda el valor de la variable por uart
-        Tx_string(valor6);*/
-
-        //gcvt(valor_flontante,# de digitos,donde guardar);
-
-
-        /*SIN INTERRUPCIONES
-        ADC0_InSeq1(Result); //llamada a la conversion 
-        valor1=(float)(((Result[0]))*3.3)/4096; //1
-        valor2=(float)(((Result[1]))*3.3)/4096; //2
-        valor3=(float)(((Result[2]))*3.3)/4096; //3
-
-        ADC1_InSeq2(Result_2); //llamada a la conversion 
-        valor4=(float)(((Result_2[0]))*3.3)/4096; //4
-        valor5=(float)(((Result_2[1]))*3.3)/4096; //5
-
-        ADC1_InSeq3(Result_3); //llamada a la conversion 
-        valor6=(float)(((Result_3[0]))*3.3)/4096; //6 */
-     
     }
+
+//Función para convertir los números del ADC en tipo char y mandarlos por UART
+extern void integer_to_char(uint16_t number) 
+{
+    char number_in_string[5];
+    int i = 3;
+    int j = 0; 
+    int n_digit;  
+    while (i >= 0){
+        n_digit = (int)number / (int)(pow(10, i));
+        number_in_string[j] = n_digit + '0';
+        number = number - (n_digit * pow(10, i)); 
+        i = i - 1; 
+        j++;
+    }
+    number_in_string[4] = '\n';
+    printString(number_in_string);
 }
 
-/// Falta comunicación del UART con MATLAB para hacer gráficas 

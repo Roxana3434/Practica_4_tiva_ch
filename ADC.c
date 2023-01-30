@@ -20,7 +20,7 @@
 
 #include "lib/include.h"
 
-extern void Configura_Reg_ADC(void)
+extern void Configura_Reg_ADC0(void)
 {
     
     //Pag 352 para inicializar el modulo de reloj del adc RCGCADC
@@ -93,10 +93,11 @@ extern void Configura_Reg_ADC(void)
 
 }
 
-/*
+
 //  Metodo de adquisición del ADC 0 y sec. 1
-extern void ADC0_InSeq1(uint16_t *Result)
+extern void ADC0_InSeq1(uint16_t Result[6])
 {
+       ADC0->PSSI = 0x00000002;
        while((ADC0->RIS&0x02)==0){}; // *** espera a que el convertidor termine  (RIS = registro de edo. muestra el edo de la señal de interrupción sin procesar)
        Result[2] = ADC0->SSFIFO1&0xFFF; //  En el FIF01 se almacenan las muestras, por lo que se lee, pag 860
        Result[1] = ADC0->SSFIFO1&0xFFF;  
@@ -107,30 +108,30 @@ extern void ADC0_InSeq1(uint16_t *Result)
 }
 
 //  Metodo de adquisición del ADC 1 y sec. 2 
-extern void ADC1_InSeq2(uint16_t *Result_2)
+extern void ADC1_InSeq2(uint16_t Result[6])
 {
     
     //ADC Processor Sample Sequence Initiate (ADCPSSI)
-      // ADC0->PSSI = 0x00000004; //se habilita el modo de configuración
+       ADC0->PSSI = 0x00000004; //se habilita el modo de configuración
        while((ADC1->RIS&0x04)==0){}; // espera al convertidor
-       Result_2[1] = ADC1->SSFIFO2&0xFFF; //  Leer  el resultado almacenado en la pila2
-       Result_2[0] = ADC1->SSFIFO2&0xFFF;
+       Result[3] = ADC1->SSFIFO2&0xFFF; //  Leer  el resultado almacenado en la pila2
+       Result[4] = ADC1->SSFIFO2&0xFFF;
        printChar('B');
        ADC1->ISC = 0x0004;  //Conversion finalizada se limpia para volver a convertir 
 
 }
 
 //  Metodo de adquisición del ADC 1 y sec. 3 
-extern void ADC1_InSeq3(uint16_t *Result_3)
+extern void ADC1_InSeq3(uint16_t Result[6])
 {
     //ADC Processor Sample Sequence Initiate (ADCPSSI)
-      // ADC0->PSSI = 0x00000004; //se habilita el modo de configuración
+      ADC0->PSSI = 0x00000008; //se habilita el modo de configuración
        while((ADC1->RIS&0x08)==0){}; // espera al convertidor
-       Result_3[0] = ADC1->SSFIFO3&0xFFF; //  Leer  el resultado almacenado en la pila2
+       Result[5] = ADC1->SSFIFO3&0xFFF; //  Leer  el resultado almacenado en la pila2
        printChar('C');
        ADC1->ISC = 0x0008;  //Conversion finalizada, se limpia para volver a convertir 
 
-}*/
+}
 
 
 
