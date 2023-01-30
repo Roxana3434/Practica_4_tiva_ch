@@ -7,6 +7,25 @@
      c) 3,5,7,4,2,8 20 MHZ 9600  */
 
 
+//Función para convertir los números del ADC en tipo char y mandarlos por UART
+    extern void integer_to_char(uint16_t number) 
+    {
+        char number_in_string[5];
+        int i = 3;
+        int j = 0; 
+        int n_digit;  
+        while (i >= 0)
+        {
+            n_digit = (int)number / (int)(pow(10, i));
+            number_in_string[j] = n_digit + '0';
+            number = number - (n_digit * pow(10, i)); 
+            i = i - 1; 
+            j++;
+        }
+        number_in_string[4] = '\n';
+        printString(number_in_string);
+    }
+
 int main(void)
 {
 
@@ -27,24 +46,6 @@ int main(void)
     Configurar_UART0();
     Configurar_GPIO();
 
-    //Función para convertir los números del ADC en tipo char y mandarlos por UART
-    extern void integer_to_char(uint16_t number) 
-    {
-        char number_in_string[5];
-        int i = 3;
-        int j = 0; 
-        int n_digit;  
-        while (i >= 0)
-        {
-            n_digit = (int)number / (int)(pow(10, i));
-            number_in_string[j] = n_digit + '0';
-            number = number - (n_digit * pow(10, i)); 
-            i = i - 1; 
-            j++;
-        }
-        number_in_string[4] = '\n';
-        printString(number_in_string);
-    }
     while(1)
     {   
         //Manda llamar a la función de conversión
